@@ -1,7 +1,13 @@
 node('docker') {
 
+  // get arround a git scm anoying feature
+  stage ('Bootstrap') {
+    sh "echo GIT_BRANCH_LOCAL=\\\"$GIT_BRANCH\\\" | sed -e 's|origin/||g' | tee version.properties"
+  }
+
   stage('Checkout') {
-    git branch: "${VERSION}", url: 'https://github.com/webofmars/grails-website.git'
+    load('version.properties')
+    checkout([$class: 'GitSCM', branches: [[name: '**']], doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'LocalBranch', localBranch: "${GIT_BRANCH_LOCAL}"]], submoduleCfg: [], userRemoteConfigs: [[url: 'https://github.com/webofmars/grails-website.git']]])
   }
 
   stage('Build') {
@@ -9,8 +15,6 @@ node('docker') {
   }
 
   stage('Package with docker') {
-    sh "echo workdir is ${WORKSPACE}"
-    sh "echo version is ${VERSION}"
     sh "cd ${WORKSPACE} && docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."
   }
 
