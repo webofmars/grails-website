@@ -18,6 +18,10 @@ node('docker') {
     docker.withRegistry("https://docker.io", "${DOCKER_CREDS_ID}") {
       def newImage = docker.build("${DOCKER_IMAGE}:${BUILD_NUMBER}")
       newImage.push()
+      def latestTag  = newImage.tag('latest')
+      def developTag = newImage.tag('develop')
+      latestTag.push()
+      developTag.push()
     }
   }
 
