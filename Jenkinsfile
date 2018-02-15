@@ -15,11 +15,10 @@ node('docker') {
   }
 
   stage('Package with docker') {
-    sh "cd ${WORKSPACE} && docker build -t ${DOCKER_IMAGE}:${BUILD_NUMBER} ."
-  }
-
-  stage('Publishing with docker') {
-    sh "docker push ${DOCKER_IMAGE}:${BUILD_NUMBER}"
+    docker.withRegistry("https://docker.io", "${DOCKER_CREDS_ID}") {
+      def newImage = docker.build("${DOCKER_IMAGE}:${BUILD_NUMBER}")
+      newImage.push()
+    }
   }
 
   /*** using the rancher plugin ***
