@@ -20,18 +20,27 @@ node('docker') {
       newImage.push()
       newImage.push('latest')
       newImage.push("${GIT_BRANCH_LOCAL}")
-      when {
-        expression { "${GIT_BRANCH_LOCAL}" == "master" }
-      }
-      steps {
-        newImage.push("stable")
-      }
     }
   }
 
+  // tests unitaires
+  stage('Tests U') {
+    docker.image("${DOCKER_IMAGE}:${BUILD_NUMBER}").withRun('./grailsw run-app') {
+      sh "curl -v http://localhost:8080/"
+    }
+  }
+
+  // tests fxels
+
+  // test de charge
+
+  // deploy staging
   /*** using the rancher plugin ***
     stage('Deploy') {
       rancher confirm: false, credentialId: '098cb525-c58f-480e-a184-1a881de49cff', endpoint: "${RANCHER_URL}", environmentId: "${RANCHER_ENV_ID}", environments: '', image: "${RANCHER_IMAGE}", ports: '', service: "${RANCHER_STACK}", timeout: 100
     }
   ***/
+
+  // deploy prod
+
 }
