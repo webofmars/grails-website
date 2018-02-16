@@ -2,7 +2,7 @@ FROM openjdk:latest
 
 ADD . /app
 WORKDIR /app
-RUN grailsw compile
+RUN ./grailsw compile
 
 CMD [ "./grailsw", "run-app" ]
 
