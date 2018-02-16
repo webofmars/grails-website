@@ -44,6 +44,9 @@ node('docker') {
   // using naive
   stage('Deploy to staging') {
     sh "cd ${WORKSPACE}/rancher"
+    sh "sed -i -e 's/<vers>/${BUILD_NUMBER}/' docker-compose.yml"
+    sh "pwd"
+    sh "ls -l"
     sh "rancher-compose -p ${RANCHER_STACK_NAME} up --upgrade"
   }
 

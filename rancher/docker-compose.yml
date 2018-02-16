@@ -2,6 +2,6 @@ version: '2'
 
 services:
   grailsweb:
-    image: webofmars/grails-app:latest
+    image: webofmars/grails-app:<vers>
   db:
     image: mariadb:10.2
