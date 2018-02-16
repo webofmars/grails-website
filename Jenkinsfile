@@ -20,6 +20,12 @@ node('docker') {
       newImage.push()
       newImage.push('latest')
       newImage.push("${GIT_BRANCH_LOCAL}")
+      when {
+        expression { "${GIT_BRANCH_LOCAL}" == "master" }
+      }
+      steps {
+        newImage.push("stable")
+      }
     }
   }
 
