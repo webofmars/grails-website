@@ -1,0 +1,7 @@
+version: '2'
+
+services:
+  grailsweb:
+    image: webofmars/grails-app:latest
+  db:
+    image: mariadb:10.2

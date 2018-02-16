@@ -1,0 +1,9 @@
+version: '2'
+
+services:
+  grailsweb:
+    start_on_create: true
+    scale: 1
+  db:
+    start_on_create: true
+    scale: 1
