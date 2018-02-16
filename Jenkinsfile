@@ -25,8 +25,7 @@ node('docker') {
 
   // tests unitaires
   stage('Tests U') {
-    docker.image("${DOCKER_IMAGE}:${BUILD_NUMBER}") {
-      sh "sleep 10"
+    docker.image("${DOCKER_IMAGE}:${BUILD_NUMBER}").inside {
       sh "curl -v http://localhost:8080/"
     }
   }
