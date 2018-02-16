@@ -25,7 +25,8 @@ node('docker') {
 
   // tests unitaires
   stage('Tests U') {
-    docker.image("${DOCKER_IMAGE}:${BUILD_NUMBER}").withRun('./grailsw run-app') {
+    docker.image("${DOCKER_IMAGE}:${BUILD_NUMBER}") {
+      sh "sleep 10"
       sh "curl -v http://localhost:8080/"
     }
   }
